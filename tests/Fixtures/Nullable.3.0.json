@@ -81,6 +81,17 @@
                           }
                         }
                       }
+                    },
+                    "privacy": {
+                      "$ref": "#/components/schemas/Privacy"
+                    },
+                    "privacy_one_of": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/Privacy"
+                        }
+                      ],
+                      "nullable": true
                     }
                   }
                 }
@@ -137,6 +148,23 @@
     }
   },
   "components": {
-    "schemas": {}
+    "schemas": {
+      "Privacy": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "profile_page": {
+            "type": "string",
+            "required": true,
+            "enum": ["private", "friends", "public"]
+          },
+          "blog_posts_default": {
+            "type": "string",
+            "enum": ["private", "friends", "public"],
+            "nullable": true
+          }
+        }
+      }
+    }
   }
 }

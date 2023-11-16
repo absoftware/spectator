@@ -61,7 +61,9 @@ abstract class AbstractValidator
             // in array of possible types (e.g. "type" => [..., "null"]).
             if (isset($attributes->nullable)) {
                 if (isset($attributes->anyOf)) {
-                    $attributes->anyOf[] = (object) ['type' => 'null'];
+                    $attributes->anyOf[] = (object)['type' => 'null'];
+                } else if (isset($attributes->oneOf)) {
+                    $attributes->oneOf[] = (object) ['type' => 'null'];
                 } else {
                     $type = Arr::wrap($attributes->type ?? null);
                     $type[] = 'null';
@@ -75,9 +77,14 @@ abstract class AbstractValidator
                 $attributes->anyOf = $this->wrapAttributesToArray($attributes->anyOf);
             }
 
+            // oneOf -> recurse ...
+            if (isset($attributes->oneOf)) {
+                $attributes->oneOf = $this->wrapAttributesToArray($attributes->oneOf);
+            }
+
             // Before we check recursive cases, make sure this object defines a "type".
             if (! isset($attributes->type)) {
-                break;
+                continue;
             }
 
             // This object has a sub-object, recurse...

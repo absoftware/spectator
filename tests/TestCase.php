@@ -17,6 +17,18 @@ abstract class TestCase extends Orchestra
 
     const NULLABLE_NULL = 4;
 
+    const NULLABLE_REF = 5;
+
+    const NULLABLE_REF_PROPERTY = 6;
+
+    const NULLABLE_REF_PROPERTY_INVALID = 7;
+
+    const NULLABLE_REF_ONE_OF = 8;
+
+    const NULLABLE_REF_ONE_OF_PROPERTY = 9;
+
+    const NULLABLE_REF_ONE_OF_PROPERTY_INVALID = 10;
+
     protected function getEnvironmentSetUp($app)
     {
         Config::set('spectator.suppress_errors', true);

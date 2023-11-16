@@ -212,6 +212,14 @@ class ResponseValidatorTest extends TestCase
                 'posts' => [
                     ['title' => 'My first post!'],
                 ],
+                'privacy' => [
+                    'profile_page' => 'public',
+                    'blog_posts_default' => 'public',
+                ],
+                'privacy_one_of' => [
+                    'profile_page' => 'public',
+                    'blog_posts_default' => 'public',
+                ],
             ];
 
             if ($state === self::NULLABLE_EMPTY_STRING) {
@@ -237,6 +245,36 @@ class ResponseValidatorTest extends TestCase
                 $return['settings']['last_updated_at'] = null;
                 $return['settings']['notifications']['email'] = null;
                 $return['posts'][0]['body'] = null;
+            }
+
+            if ($state === self::NULLABLE_REF) {
+                $return['privacy'] = null;
+            }
+
+            if ($state === self::NULLABLE_REF_PROPERTY) {
+                $return['privacy']['blog_posts_default'] = null;
+            }
+
+            if ($state === self::NULLABLE_REF_PROPERTY_INVALID) {
+                $return['privacy'] = [
+                    'profile_page' => null, // mandatory field cannot be null
+                    'blog_posts_default' => 'public',
+                ];
+            }
+
+            if ($state === self::NULLABLE_REF_ONE_OF) {
+                $return['privacy_one_of'] = null;
+            }
+
+            if ($state === self::NULLABLE_REF_ONE_OF_PROPERTY) {
+                $return['privacy_one_of']['blog_posts_default'] = null;
+            }
+
+            if ($state === self::NULLABLE_REF_ONE_OF_PROPERTY_INVALID) {
+                $return['privacy_one_of'] = [
+                    'profile_page' => null, // mandatory field cannot be null
+                    'blog_posts_default' => 'public',
+                ];
             }
 
             return $return;
@@ -290,6 +328,42 @@ class ResponseValidatorTest extends TestCase
             '3.0, invalid' => [
                 $v30,
                 self::NULLABLE_INVALID,
+                $invalidResponse,
+            ],
+
+            '3.0, ref' => [
+                $v30,
+                self::NULLABLE_REF,
+                $validResponse,
+            ],
+
+            '3.0, ref property' => [
+                $v30,
+                self::NULLABLE_REF_PROPERTY,
+                $validResponse,
+            ],
+
+            '3.0, ref property invalid' => [
+                $v30,
+                self::NULLABLE_REF_PROPERTY_INVALID,
+                $invalidResponse,
+            ],
+
+            '3.0, ref one of' => [
+                $v30,
+                self::NULLABLE_REF_ONE_OF,
+                $validResponse,
+            ],
+
+            '3.0, ref one of property' => [
+                $v30,
+                self::NULLABLE_REF_ONE_OF_PROPERTY,
+                $validResponse,
+            ],
+
+            '3.0, ref one of property invalid' => [
+                $v30,
+                self::NULLABLE_REF_ONE_OF_PROPERTY_INVALID,
                 $invalidResponse,
             ],
 
